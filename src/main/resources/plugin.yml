@@ -1,0 +1,8 @@
+name: IndustrialFarming
+version: ${project.version}
+main: net.manncraft.industrialfarming.IndustrialFarming
+api-version: 1.16
+prefix: IndustrialFarming
+depend: [Vault]
+authors: [MityMarcus]
+description: Expands Minecraft's farming to very large proportions
