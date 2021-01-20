@@ -1,6 +1,6 @@
 package net.manncraft.utils;
 
-public interface PluginContextBaseInterface {
+public interface PluginContextBaseInterface<T> {
     void shutdown();
-
+    T config();
 }

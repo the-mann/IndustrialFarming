@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -18,13 +19,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
-
-public abstract class VaultContextBase<T> implements VaultContextBaseInterface {
+@Accessors(fluent = true, chain = true)
+public abstract class VaultContextBase<T> implements VaultContextBaseInterface<T> {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory()).configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
-    T config;
+    @Getter
+    private T config;
 
-    File configFile;
+    private File configFile;
 
     private final Logger log;
 

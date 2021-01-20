@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Data
 public class IFListener implements Listener {
-    private final VaultContextBaseInterface context;
+    private final VaultContextBaseInterface<?> context;
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         //Broke farmland
