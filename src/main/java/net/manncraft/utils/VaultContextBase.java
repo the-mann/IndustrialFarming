@@ -9,25 +9,24 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Server;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
+
 @Accessors(fluent = true, chain = true)
 public abstract class VaultContextBase<T> implements VaultContextBaseInterface<T> {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory()).configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
     @Getter
     private T config;
 
     private File configFile;
 
+    @Getter
     private final Logger log;
 
     @Getter
@@ -37,7 +36,11 @@ public abstract class VaultContextBase<T> implements VaultContextBaseInterface<T
     @Getter
     private Chat chat = null;
 
+    @Getter
+    private Plugin plugin;
+
     public VaultContextBase(JavaPlugin plugin, Class<T> configType, Supplier<T> newConfig) {
+        this.plugin = plugin;
         log = plugin.getLogger();
         try {
             configFile = new File(plugin.getDataFolder().getCanonicalPath(), "config.yml");
@@ -46,7 +49,6 @@ public abstract class VaultContextBase<T> implements VaultContextBaseInterface<T
             }else {
                 config = newConfig.get();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -90,6 +92,7 @@ public abstract class VaultContextBase<T> implements VaultContextBaseInterface<T
     public void shutdown() {
         try {
             configFile.getParentFile().mkdirs();
+            log.info(config.toString());
             mapper.writeValue(configFile, config);
         } catch (IOException e) {
             log.severe("UH OH! Something went horribly wrong saving: ");
